@@ -1,16 +1,11 @@
 ---
-masters:
-  -
-    MASTER_HOST: db1.example.com
-    MASTER_LOG_FILE: 
-    MASTER_LOG_POS: 
-    MASTER_PASSWORD: xxxxxxxxxx
-    MASTER_PORT: 3306
-    MASTER_USER: slave_user
-  -
-    MASTER_HOST: db2.example.com
-    MASTER_LOG_FILE: mysql-bin.000001
-    MASTER_LOG_POS: 893
-    MASTER_PASSWORD: xxxxxxxxxx
-    MASTER_PORT: 3306
-    MASTER_USER: slave_user
+mysql:
+  MYSQL_HOST: localhost
+  MYSQL_USER: user
+  MYSQL_PASSWORD: password
+wait:
+  SWITCH_WAIT: 3              # マスタを切り替えた後に待つ秒数
+  CONNECTING_WAIT: 1          # マスタへの接続待ちになったときに待つ秒数
+  CATCHUP_WAIT: 1             # Seconds_Behind_Master が 0 でないときに待つ秒数
+  MASTER_POS_WAIT: 10         # MASTER_POS_WAIT の 待つ秒数
+  RESTART_IO_THREAD_WAIT: 3   # IO_THREAD 待ちでロックした際の、 IO_THREAD を動かす秒数
