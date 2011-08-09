@@ -1,3 +1,9 @@
+Author     : do_aki
+License    : Perl License
+
+================
+これはなに？
+================
 MySQL Casual Talks Vol.2 で話した、Slave の、参照先 Master 切り替えツール
 
 
@@ -38,3 +44,14 @@ SwitchMaster::DBI を SwitchMaster::Command
 
 デーモン化とかしてないので、nohup するなり disown するなりしてください。
 
+
+====================
+ライセンスについて
+====================
+同梱されている YAML::Tiny モジュールのライセンスは、perl と同等のライセンスに従っています
+(全文は LICENSE-YAML-Tiny に含まれます)
+http://search.cpan.org/~adamk/YAML-Tiny-1.50/
+
+ほんとは MIT ライセンスにしたいのだけど、 YAML::Tiny を同梱しているからできないのかな？
+ということで、とりあえず perl ライセンスにしています。
+ライセンス難しい。
