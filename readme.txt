@@ -1,40 +1,40 @@
-MySQL Casual Talks Vol.2 �Řb�����ASlave �́A�Q�Ɛ� Master �؂�ւ��c�[��
+MySQL Casual Talks Vol.2 で話した、Slave の、参照先 Master 切り替えツール
 
 
 ====================
-�K�v�ȃ��m
+必要なモノ
 ====================
-perl �ƁAperl �� DBI ���W���[���� DBD::mysql ���W���[�����K�v
+perl と、perl の DBI モジュールと DBD::mysql モジュールが必要
 
 
-switch_master.pl 35�s�ڕt�߂�
+switch_master.pl 35行目付近の
 
-SwitchMaster::DBI �� SwitchMaster::Command
+SwitchMaster::DBI を SwitchMaster::Command
 
-�ɂ���ƁA mysql �N���C�A���g�𗘗p���Ď��s����B
-(���̏ꍇ�� DBI/DBD::mysql �K�v�Ȃ�)
+にすると、 mysql クライアントを利用して実行する。
+(その場合は DBI/DBD::mysql 必要ない)
 
 
 ====================
-�ǂ�����Ďg���H
+どうやって使う？
 ====================
 
 1.
-	���炩���߁A�����̃}�X�^����f�[�^���o�b�N�A�b�v���A
-	MASTER_LOG_FILE / MASTER_LOG_POS ���L�^���Ă����B
+	あらかじめ、複数のマスタからデータをバックアップし、
+	MASTER_LOG_FILE / MASTER_LOG_POS を記録しておく。
 
 2.
-	�X���[�u�T�[�o�ɁA�S�f�[�^�𓊓��B
-	�ǂꂩ��̃}�X�^�ɑ΂��āA���v���P�[�V�����𒣂��Ă���
+	スレーブサーバに、全データを投入。
+	どれか一つのマスタに対して、レプリケーションを張っておく
 
 3.
-	data/settings.yaml.dist �� data/settings.yaml �ɏ��������āA�X���[�u�T�[�o�ւ̐ڑ��ݒ������B
+	data/settings.yaml.dist を data/settings.yaml に書き換えて、スレーブサーバへの接続設定をする。
 
-	data/masters.yaml.dist �� data/masters.yaml �ɏ��������āA���v���P�[�V�����ݒ� (CHANGE MASTER TO �̓��e)������B
-	���̂Ƃ��A���ɓ����Ă��郌�v���P�[�V������ MASTER_LOG_FILE / MASTER_LOG_POS �͐ݒ肷��K�v���Ȃ�
+	data/masters.yaml.dist を data/masters.yaml に書き換えて、レプリケーション設定 (CHANGE MASTER TO の内容)をする。
+	このとき、既に動いているレプリケーションの MASTER_LOG_FILE / MASTER_LOG_POS は設定する必要がない
 
 4.
 	perl switch_master.pl
 
-�f�[�������Ƃ����ĂȂ��̂ŁAnohup ����Ȃ� disown ����Ȃ肵�Ă��������B
+デーモン化とかしてないので、nohup するなり disown するなりしてください。
 
