@@ -1,0 +1,16 @@
+---
+masters:
+  -
+    MASTER_HOST: db1.example.com
+    MASTER_LOG_FILE: 
+    MASTER_LOG_POS: 
+    MASTER_PASSWORD: xxxxxxxxxx
+    MASTER_PORT: 3306
+    MASTER_USER: slave_user
+  -
+    MASTER_HOST: db2.example.com
+    MASTER_LOG_FILE: mysql-bin.000001
+    MASTER_LOG_POS: 893
+    MASTER_PASSWORD: xxxxxxxxxx
+    MASTER_PORT: 3306
+    MASTER_USER: slave_user
