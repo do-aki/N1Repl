@@ -31,7 +31,8 @@ hook_signals([qw/INT TERM QUIT HUP PIPE/], sub {
 
 load_settings();
 
-my $db = new SwitchMaster::Command($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD);
+#my $db = new SwitchMaster::Command($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD);
+my $db = new SwitchMaster::DBI($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD);
 
 while(1) {
 

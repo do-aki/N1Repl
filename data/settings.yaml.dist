@@ -1,8 +1,8 @@
 ---
 mysql:
-  MYSQL_HOST: localhost
-  MYSQL_USER: user
-  MYSQL_PASSWORD: password
+  MYSQL_HOST: localhost       # スレーブサーバのホスト
+  MYSQL_USER: user            # ユーザ名
+  MYSQL_PASSWORD: password    # パスワード
 wait:
   SWITCH_WAIT: 3              # マスタを切り替えた後に待つ秒数
   CONNECTING_WAIT: 1          # マスタへの接続待ちになったときに待つ秒数
