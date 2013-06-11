@@ -31,7 +31,7 @@ sub do {
 
 sub master_pos_wait {
   my ($self, $file, $pos, $timeout) = @_;
-  my $ret = $self->_mysql_cmd("SELECT MASTER_POS_WAIT('$file', $pos, $timeout) \G");
+  my $ret = $self->_mysql_cmd("SELECT MASTER_POS_WAIT('$file', $pos, $timeout) \\G");
   $ret = [split /\n/, $ret]->[1];
   chomp($ret);
   return $ret;
@@ -56,3 +56,4 @@ sub _mysql_cmd {
 }
 
 1;
+
