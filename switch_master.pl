@@ -11,9 +11,8 @@ require 'common.pl';
 
 ++$|; # buffer off
 
-my $DATA_FILE = $FindBin::Bin . '/data/settings.yaml';
-
 our $MYSQL_HOST;
+our $MYSQL_PORT;
 our $MYSQL_USER;
 our $MYSQL_PASSWORD;
 
@@ -28,11 +27,10 @@ hook_signals([qw/INT TERM QUIT HUP PIPE/], sub {
   logging('debug', "receive exit request.") unless($exit_flag);
   $exit_flag = 1;
 });
-
 load_settings();
 
-#my $db = new SwitchMaster::Command($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD);
-my $db = new SwitchMaster::DBI($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD);
+#my $db = new SwitchMaster::Command($MYSQL_HOST, $MYSQL_PORT, $MYSQL_USER, $MYSQL_PASSWORD);
+my $db = new SwitchMaster::DBI($MYSQL_HOST, $MYSQL_PORT, $MYSQL_USER, $MYSQL_PASSWORD);
 
 while(1) {
 
@@ -52,7 +50,6 @@ while(1) {
     die ('slave stopped');
   }
 
-
   if ($exit_flag) {
     logging('info', "exit.");
     exit(0);
@@ -64,9 +61,12 @@ while(1) {
     next;
   }
 
-  my $current_master = $status0->{Master_Host};
+  my $current_master = {
+    host => $status0->{Master_Host},
+    port => $status0->{Master_Port},
+  };
   if (!get_master_config($current_master)) {
-    die("${current_master} is not defined");
+    die("$current_master->{host} is not defined");
   }
   
   
@@ -106,7 +106,7 @@ while(1) {
 #  set_master_config($current_master, 'RELAY_LOG_POS', $status2->{Relay_Log_Pos});
   save_settings();
   
-  logging('info', "save host $current_master $status1->{Master_Log_File} : $status1->{Read_Master_Log_Pos} and change host to $next_master->{MASTER_HOST}");
+  logging('info', "save host $current_master->{host}:$current_master->{port} $status1->{Master_Log_File} : $status1->{Read_Master_Log_Pos} and change host to $next_master->{MASTER_HOST}");
 
   $db->do('START SLAVE');
   sleep $SWITCH_WAIT;

@@ -6,8 +6,9 @@ use IPC::Open2;
 use Data::Dumper;
 
 sub new {
-  my ($cls, $host, $user, $password) = @_;
-  my $self = {mysql_cmd => "mysql --host=$host --user=$user --password=$password "};
+  my ($cls, $host, $port, $user, $password) = @_;
+  $port = $port || 3306;
+  my $self = {mysql_cmd => "mysql --host=$host --port=$port --user=$user --password=$password "};
   return bless $self => $cls;
 }
 

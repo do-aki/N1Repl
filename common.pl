@@ -46,7 +46,7 @@ sub save_settings {
 sub get_master_config {
   my ($host,$name) = @_;
   for my $m (@CONFIG_MASTERS) {
-    if ($host eq $m->{MASTER_HOST}) {
+    if ($host->{host} eq $m->{MASTER_HOST} && $host->{port} == $m->{MASTER_PORT}) {
       return (defined $name)? $m->{$name} : $m;
     }
   }
@@ -57,7 +57,7 @@ sub get_next_master_config {
   my $flag = 0;
   for my $m (@CONFIG_MASTERS) {
     return $m if ($flag);
-    $flag = 1 if ($host eq $m->{MASTER_HOST});
+    $flag = 1 if ($host->{host} eq $m->{MASTER_HOST} && $host->{port} == $m->{MASTER_PORT});
   }
   return $CONFIG_MASTERS[0];
 }

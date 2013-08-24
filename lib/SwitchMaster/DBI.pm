@@ -6,8 +6,9 @@ use Data::Dumper;
 use DBI;
 
 sub new {
-  my ($cls, $host, $user, $password) = @_;
-  my $dbh = DBI->connect("DBI:mysql:mysql:$host", $user, $password, {
+  my ($cls, $host, $port, $user, $password) = @_;
+  $port = $port || 3306;
+  my $dbh = DBI->connect("DBI:mysql:mysql:$host;port=$port", $user, $password, {
     ShowErrorStatement => 1,
     mysql_enable_utf8 => 1,
     mysql_auto_reconnect => 1,
