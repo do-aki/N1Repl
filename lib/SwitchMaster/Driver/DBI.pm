@@ -1,4 +1,4 @@
-package SwitchMaster::DBI;
+package SwitchMaster::Driver::DBI;
 use strict;
 use warnings;
 use utf8;
@@ -14,6 +14,12 @@ sub new {
     mysql_auto_reconnect => 1,
   }) or die 'cannot connect';
   return bless {dbh => $dbh} => $cls
+}
+
+sub DESTROY {
+  my $self = shift;
+  $self->{dbh}->disconnect() if $self->{dbh};
+  undef $self->{dbh}
 }
 
 sub show_slave_status {

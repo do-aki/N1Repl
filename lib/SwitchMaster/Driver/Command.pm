@@ -1,4 +1,4 @@
-package SwitchMaster::Command;
+package SwitchMaster::Driver::Command;
 use strict;
 use warnings;
 use utf8;
