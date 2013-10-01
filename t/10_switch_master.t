@@ -1,7 +1,5 @@
 use strict;
 use warnings;
-use lib 'extlib/lib/perl5';
-use lib 'lib';
 use File::Temp qw/tempfile/;
 use Test::More;
 use DBI;
