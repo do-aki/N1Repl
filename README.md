@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/do-aki/SwitchMaster.png?branch=modulize)](https://travis-ci.org/do-aki/SwitchMaster)
+[![Coverage Status](https://coveralls.io/repos/do-aki/SwitchMaster/badge.png?branch=modulize)](https://coveralls.io/r/do-aki/SwitchMaster?branch=modulize)
 
 # NAME
 
