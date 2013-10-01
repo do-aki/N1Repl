@@ -1,5 +1,27 @@
-cpanfile.snapshot
-local/
+/.build/
+/_build/
+/Build
+/blib
 
+/carton.lock
+/cpanfile.snapshot
+/.carton/
+/local/
+
+nytprof.out
+nytprof/
+
+cover_db/
+
+*.bak
+*.old
+*~
 *.swp
+*.o
+*.obj
 
+!LICENSE
+
+MYMETA.*
+
+/minilla_sample-*
