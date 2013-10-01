@@ -1,7 +1,6 @@
 package t::setUp;
 use strict;
 use warnings;
-use local::lib;
 use base qw/Exporter/;
 use DBI;
 use File::Temp qw/tempdir/;
