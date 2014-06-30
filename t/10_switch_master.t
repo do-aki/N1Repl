@@ -27,16 +27,12 @@ my $pid = fork();
 if ($pid == 0) {
   Test::SharedFork->child;
 
-  my $c = new SwitchMaster::Config(
-    data_file => $data_file,
-  );
-  $c->load();
+  my $c = new SwitchMaster::Config();
+  $c->set_data_file($data_file);
   $c->{SWITCH_WAIT} = 1;
-  
-  
-  my $sm = new SwitchMaster(driver=>'DBI', config=>$c);
-  $sm->connect(host=>'127.0.0.1', port=>$slave->my_cnf->{port}, user=>'root');
 
+  my $sm = new SwitchMaster(driver=>'DBI', config=>$c);
+  $sm->connect(MYSQL_HOST=>'127.0.0.1', MYSQL_PORT=>$slave->my_cnf->{port}, MYSQL_USER=>'root');
   $sm->run();
 } elsif (0 < $pid) {
   Test::SharedFork->parent;
@@ -59,8 +55,5 @@ if ($pid == 0) {
 } else {
   die "failed fork: $!";
 }
-
-
-
 
 

@@ -22,20 +22,12 @@ GetOptions(
 
 
 if ($help) {
-  pod2usage(-verbose=>2,-exitval=>0);
+  pod2usage(-verbose=>2, -exitval=>0);
 }
 
-my $c = new SwitchMaster::Config(
-  data_file => $FindBin::Bin . '/data/masters.yaml',
-  conf_file => $FindBin::Bin . '/data/settings.yaml'
-);
-$c->load();
-
-my $sm = new SwitchMaster(driver=>'DBI', config=>$c);
-$sm->connect($c->get_connect_config());
-
-
-
+$c = SwitchMaster::Config->new->load($FindBin::Bin . '/data/settings.yaml');
+my $sm = new SwitchMaster(driver=>'DBI', config => $c);
+$sm->connect();
 $sm->run();
 
 __END__

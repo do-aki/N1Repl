@@ -1,0 +1,7 @@
+data_file: t/02_config/data.yaml
+mysql:
+  MYSQL_HOST: 192.168.0.1
+  MYSQL_PORT: 3307
+  MYSQL_USER: myuser
+  MYSQL_PASSWORD: pass
+

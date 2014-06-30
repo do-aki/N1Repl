@@ -18,29 +18,29 @@ sub new {
     Carp::croak("invalid driver '$driver'");
   }
 
-  for my $k (qw/config/) {
-    die ("missing mandatory parameter '$k'") unless $args{$k};
-  }
-
-  my $config = $args{config};
-  die ('invalid config') unless (!blessed($config) || $config->isa('SwitchMaster::Config'));
-
+  die ("missing mandatory parameter 'config'") unless $args{config};
 
   bless {
     driver_name => "SwitchMaster::Driver::$driver",
-    config => $config,
+    config => $args{config},
   } => $class;
 }
 
 sub connect {
   my ($self, %args) = @_;
-  $args{port} = $args{port} || 3306;
+
+  if (scalar %args) {
+    $self->{config}->set_connect_config(%args);
+  }
+
+  my %conf = $self->{config}->get_connect_config();
+  $conf{port} = $conf{port} || 3306;
 
   my $driver;
   eval {
-    $driver = $self->{driver_name}->new($args{host}, $args{port}, $args{user}, $args{password}); 
+    $driver = $self->{driver_name}->new($conf{host}, $conf{port}, $conf{user}, $conf{password});
   };
-  if ($@) {
+  if ($@ || !$driver) {
     Carp::croak("cannot create driver: $@");
   }
 
@@ -225,9 +225,6 @@ my @CONFIG_MASTERS;
 
 sub new {
   my ($class, %args) = @_;
-  for my $k (qw/data_file/) {
-    die ("missing mandatory parameter '$k'") unless $args{$k};
-  }
 
   my %self = ((
     _conf_file => $args{conf_file},
@@ -236,19 +233,35 @@ sub new {
   bless \%self => $class;
 }
 
-sub load {
-  my ($self) = @_;
+sub get_data_file {
+  (shift)->{_data_file};
+}
+
+sub set_data_file {
+  my ($self, $file) = @_;
+  $self->{_data_file} = $file;
 
   if (-f $self->{_data_file}) {
     my $dat = YAML::Tiny::LoadFile($self->{_data_file});
+
     for my $m (@{$dat}) {
       $self->add_master(%{$m});
     }
   }
+}
+
+sub load {
+  my ($self, $file) = @_;
 
   my $conf;
-  if ($self->{_conf_file} && -f $self->{_conf_file}) {
-    $conf = YAML::Tiny::LoadFile($self->{_conf_file});
+  eval{
+    $conf = YAML::Tiny::LoadFile($file);
+
+    Carp::croak("data_file is not specified in $file") if (!$conf->{data_file});
+    $self->set_data_file($conf->{data_file});
+  };
+  if ($@) {
+    die $@;
   }
 
   while(my ($k,$default) = each(%wait_default)) {
@@ -257,10 +270,7 @@ sub load {
     $self->{$k} = $v;
   }
 
-  while(my($k,$default) = each(%mysql_default)) {
-    my $v = $conf->{mysql}{$k} || $default;
-    $self->{_connect}{$k} = $v;
-  }
+  $self->set_connect_config(%{$conf->{mysql}});
 }
 
 sub save {
@@ -290,6 +300,14 @@ sub get_connect_config {
     user => $self->{_connect}{MYSQL_USER},
     password => $self->{_connect}{MYSQL_PASSWORD},
   );
+}
+
+sub set_connect_config {
+  my ($self, %conf) = @_;
+  while(my($k,$default) = each(%mysql_default)) {
+    my $v = $conf{$k} || $default;
+    $self->{_connect}{$k} = $v;
+  }
 }
 
 sub get_master_config {
