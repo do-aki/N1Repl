@@ -26,7 +26,7 @@ if ($help) {
 }
 
 $c = SwitchMaster::Config->new->load($FindBin::Bin . '/data/settings.yaml');
-my $sm = new SwitchMaster(driver=>'DBI', config => $c);
+my $sm = new SwitchMaster::Controller(driver=>'DBI', config => $c);
 $sm->connect();
 $sm->run();
 

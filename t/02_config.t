@@ -3,12 +3,12 @@ use warnings;
 use Test::More;
 use t::setUp;
 
-use SwitchMaster;
+use SwitchMaster::Config;
 
 my $c = new SwitchMaster::Config();
 $c->load('t/02_config/conf.yaml');
 
-my %conf = $c->get_connect_config();
+my %conf = $c->connect_config;
 is_deeply(\%conf, {
   host => '192.168.0.1',
   port => 3307,
@@ -16,7 +16,7 @@ is_deeply(\%conf, {
   password => 'pass',
 }, 'connect_config');
 
-my $master_conf = $c->get_master_config;
+my $master_conf = $c->master_config;
 my $m1 = $master_conf->find('127.0.0.1', 3306);
 is_deeply($m1, {
   MASTER_HOST     => '127.0.0.1',
