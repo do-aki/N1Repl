@@ -22,13 +22,14 @@ my $mi2 = get_master_info($master2);
 
 my $data_file = [tempfile()]->[1];
 YAML::Tiny::DumpFile($data_file, [$mi1, $mi2]);
+my $master_config = SwitchMaster::MasterConfig->new($data_file)->restore();
 
 my $pid = fork();
 if ($pid == 0) {
   Test::SharedFork->child;
 
   my $c = new SwitchMaster::Config();
-  $c->set_data_file($data_file);
+  $c->master_config($master_config);
   $c->{SWITCH_WAIT} = 1;
 
   my $sm = new SwitchMaster(driver=>'DBI', config=>$c);
@@ -39,16 +40,27 @@ if ($pid == 0) {
 
   my $dbm1 = DBI->connect($master1->dsn);
   my $dbm2 = DBI->connect($master2->dsn);
-  my $dbs = DBI->connect($slave->dsn);
   $dbm1->do('CREATE TABLE master1 (id int)');
   $dbm2->do('CREATE TABLE master2 (id int)');
+  for (my $i=0;$i<10;++$i) {
+    $dbm1->do("INSERT INTO master1(id) VALUES($i)");
+    $dbm2->do("INSERT INTO master2(id) VALUES($i)");
+  }
 
   sleep(5);
 
-  my $tbls = $dbs->selectcol_arrayref('SHOW TABLES');
+  my $slave = DBI->connect($slave->dsn);
+  my $tbls = $slave->selectcol_arrayref('SHOW TABLES');
 
   ok(grep {$_ eq 'master1'} @{$tbls} , 'TABLE master1 exists');
   ok(grep {$_ eq 'master2'} @{$tbls} , 'TABLE master2 exists');
+
+  my $from_m1 = $slave->selectall_arrayref('SELECT id FROM master1');
+  is_deeply(map {$_[0]} $from_m1, [0..9] , 'master1 rows');
+
+  my $from_m2 = $slave->selectall_arrayref('SELECT id FROM master2');
+  is_deeply(map {$_[0]} $from_m2, [0..9], 'master2 rows');
+
 
   kill 'HUP' => $pid;
   done_testing;
