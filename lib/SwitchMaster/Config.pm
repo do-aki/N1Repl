@@ -8,6 +8,7 @@ use YAML::Tiny;
 use Scalar::Util qw/blessed/;
 use SwitchMaster::MasterConfig;
 use SwitchMaster::CommandChecker;
+use SwitchMaster::CommandPublisher;
 
 # デフォルト値の設定
 my %wait_default = (
@@ -31,6 +32,8 @@ sub new {
 
   my %self = ((
     _master_config => undef,
+    _command_checker => undef,
+    _command_publisher => undef,
   ), %wait_default);
   bless \%self => $class;
 }
@@ -47,6 +50,7 @@ sub load {
 
     Carp::croak("command_file is not specified in $file") if (!$conf->{command_file});
     $self->{_command_checker} = new SwitchMaster::CommandChecker($conf->{command_file});
+    $self->{_command_publisher} = new SwitchMaster::CommandPublisher($conf->{command_file});
   };
   if ($@) {
     croak $@;
@@ -109,4 +113,20 @@ sub command_checker {
   Carp::croak("not set command checker") unless ($self->{_command_checker});
   $self->{_command_checker};
 }
+
+sub command_publisher {
+  my ($self, $publisher) = @_;
+
+  if ($publisher) {
+    if (!blessed($publisher) || !$publisher->isa('SwitchMaster::CommandPublisher')) {
+      Carp::croak("invalid command publisher");
+    }
+
+    $self->{_command_publisher} = $publisher;
+  }
+
+  Carp::croak("not set command publisher") unless ($self->{_command_publisher});
+  $self->{_command_publisher};
+}
+
 1;
