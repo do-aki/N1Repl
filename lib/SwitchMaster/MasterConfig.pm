@@ -35,9 +35,6 @@ sub add {
     Carp::croak("missing mandatory parameter '$k'") unless $args{$k};
   }
 
-  unless ($args{DISPLAY_NAME}) {
-    $args{DISPLAY_NAME} = $args{MASTER_HOST} . ':' . $args{MASTER_PORT};
-  }
   push(@{$self->{masters}}, \%args);
 }
 
@@ -52,6 +49,11 @@ sub find {
     ++$index;
   }
   return undef;
+}
+
+sub first {
+  my $self = shift;
+  $self->{masters}[0];
 }
 
 sub next {
@@ -80,7 +82,7 @@ sub set_value {
 
 sub serialize {
   my $self = shift;
-  YAML::Tiny::DumpFile($self->{store_file}, $self->{data});
+  YAML::Tiny::DumpFile($self->{store_file}, $self->{masters});
 }
 
 1;

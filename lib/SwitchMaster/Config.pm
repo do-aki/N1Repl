@@ -3,9 +3,11 @@ package SwitchMaster::Config;
 use strict;
 use warnings;
 use utf8;
+use Carp qw/croak/;
 use YAML::Tiny;
 use Scalar::Util qw/blessed/;
 use SwitchMaster::MasterConfig;
+use SwitchMaster::CommandChecker;
 
 # デフォルト値の設定
 my %wait_default = (
@@ -14,6 +16,7 @@ my %wait_default = (
   CATCHUP_WAIT           => 1,   # seconds_behind_master が 0 でないときに待つ秒数
   MASTER_POS_WAIT        => 10,  # master_pos_wait の 待つ秒数
   RESTART_IO_THREAD_WAIT => 3,   # io_thread 待ちでロックした際の、 io_thread を動かす秒数
+  COMMAND_CHECK_WAIT     => 1,   # 
 );
 
 my %mysql_default = (
@@ -41,9 +44,12 @@ sub load {
 
     Carp::croak("data_file is not specified in $file") if (!$conf->{data_file});
     $self->{_master_config} = new SwitchMaster::MasterConfig($conf->{data_file});
+
+    Carp::croak("command_file is not specified in $file") if (!$conf->{command_file});
+    $self->{_command_checker} = new SwitchMaster::CommandChecker($conf->{command_file});
   };
   if ($@) {
-    die $@;
+    croak $@;
   }
 
   while(my ($k,$default) = each(%wait_default)) {
@@ -53,6 +59,7 @@ sub load {
   }
 
   $self->connect_config(%{$conf->{mysql}});
+  $self;
 }
 
 sub connect_config {
@@ -84,8 +91,22 @@ sub master_config {
     $self->{_master_config} = $master_config;
   }
 
-  Carp::croak("no set master config") unless ($self->{_master_config});
+  Carp::croak("not set master config") unless ($self->{_master_config});
   $self->{_master_config};
 }
 
+sub command_checker {
+  my ($self, $checker) = @_;
+
+  if ($checker) {
+    if (!blessed($checker) || !$checker->isa('SwitchMaster::CommandChecker')) {
+      Carp::croak("invalid command checker");
+    }
+
+    $self->{_command_checker} = $checker;
+  }
+
+  Carp::croak("not set command checker") unless ($self->{_command_checker});
+  $self->{_command_checker};
+}
 1;

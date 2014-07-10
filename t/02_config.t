@@ -24,7 +24,6 @@ is_deeply($m1, {
   MASTER_LOG_POS  => 203,
   MASTER_PORT     => 3306,
   MASTER_USER     => 'root',
-  DISPLAY_NAME    => '127.0.0.1:3306',
 }, 'master1');
 
 my $m2 = $master_conf->find('127.0.0.1', 3307);
@@ -34,7 +33,6 @@ is_deeply($m2, {
   MASTER_LOG_POS  => 777,
   MASTER_PORT     => 3307,
   MASTER_USER     => 'root',
-  DISPLAY_NAME    => '127.0.0.1:3307',
 }, 'master2');
 
 

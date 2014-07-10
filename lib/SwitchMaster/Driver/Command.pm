@@ -22,7 +22,9 @@ sub show_slave_status {
       $ret{$1} = $2;
     }
   }
-  return \%ret;
+
+  return \%ret if (scalar(%ret));
+  return;
 }
 
 sub do {

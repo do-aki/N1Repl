@@ -9,24 +9,27 @@ use lib "$FindBin::Bin/lib";
 use Getopt::Long;
 use Pod::Usage;
 use Data::Dumper;
-use SwitchMaster;
+use SwitchMaster::Config;
+use SwitchMaster::Controller;
 
 ++$|; # auto flush
 
 my $daemonize = 0;
+my $config_file;
 Getopt::Long::Configure ("no_ignore_case");
 GetOptions(
+  'config=s' => \$config_file,
   'daemon' => \$daemonize,
   'h|help' => \my $help,
 );
 
 
-if ($help) {
+if ($help || !$config_file) {
   pod2usage(-verbose=>2, -exitval=>0);
 }
 
-$c = SwitchMaster::Config->new->load($FindBin::Bin . '/data/settings.yaml');
-my $sm = new SwitchMaster::Controller(driver=>'DBI', config => $c);
+my $config = SwitchMaster::Config->new()->load($config_file);
+my $sm = new SwitchMaster::Controller(driver=>'DBI', config => $config);
 $sm->connect();
 $sm->run();
 
