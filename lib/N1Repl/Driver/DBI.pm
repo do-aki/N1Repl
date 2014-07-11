@@ -1,4 +1,4 @@
-package SwitchMaster::Driver::DBI;
+package N1Repl::Driver::DBI;
 use strict;
 use warnings;
 use utf8;

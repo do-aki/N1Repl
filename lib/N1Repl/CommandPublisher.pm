@@ -1,10 +1,10 @@
-package SwitchMaster::CommandPublisher;
+package N1Repl::CommandPublisher;
 
 use strict;
 use warnings;
 use Carp;
 use Fcntl ':flock';
-use SwitchMaster::Command;
+use N1Repl::Command;
 
 sub new {
   my $class = shift;

@@ -23,8 +23,8 @@ my %args = (
         'Module::Build' => 0.38,
     },
 
-    name            => 'SwitchMaster',
-    module_name     => 'SwitchMaster',
+    name            => 'N1Repl',
+    module_name     => 'N1Repl',
     allow_pureperl => 0,
 
     script_files => [glob('script/*'), glob('bin/*')],

@@ -1,10 +1,10 @@
-package SwitchMaster::CommandChecker;
+package N1Repl::CommandChecker;
 
 use strict;
 use warnings;
 use Carp;
 use Fcntl ':flock';
-use SwitchMaster::Command;
+use N1Repl::Command;
 
 sub new {
   my $class = shift;
@@ -19,25 +19,25 @@ sub fetch {
   my $self = shift;
 
   unless (-f $self->{file}) {
-    return SwitchMaster::Command::nop();
+    return N1Repl::Command::nop();
   }
 
   my $f;
   unless (open($f, '+<', $self->{file})) {
-    return SwitchMaster::Command::nop();
+    return N1Repl::Command::nop();
   }
 
   unless (flock($f, LOCK_EX | LOCK_NB)) {
     close($f);
-    return SwitchMaster::Command::nop();
+    return N1Repl::Command::nop();
   }
 
   my $line = <$f>;
   unless ($line) {
-    return SwitchMaster::Command::nop();
+    return N1Repl::Command::nop();
   }
   chomp($line);
-  my $cmd = SwitchMaster::Command::parse($line);
+  my $cmd = N1Repl::Command::parse($line);
 
   truncate($f, 0);
   close($f);

@@ -9,8 +9,8 @@ use lib "$FindBin::Bin/lib";
 use Getopt::Long;
 use Pod::Usage;
 use Data::Dumper;
-use SwitchMaster::Config;
-use SwitchMaster::CommandPublisher;
+use N1Repl::Config;
+use N1Repl::CommandPublisher;
 
 ++$|; # auto flush
 
@@ -43,7 +43,7 @@ if ($help || !$config_file || !$command) {
 }
 
 
-my $config = SwitchMaster::Config->new()->load($config_file);
+my $config = N1Repl::Config->new()->load($config_file);
 my $publisher = $config->command_publisher;
 
 my $cmd = $publisher->make_command(uc($command));
@@ -63,15 +63,16 @@ __END__
 
 =head1 NAME
 
-    switch_master_command.pl
+    n1repl_command.pl
 
 =head1 SYNOPSIS
 
-    % switch_master_command.pl --config=sm.yaml start 
+    % n1repl_command_command.pl --conf=conf.yaml start
+    % n1repl_command_command.pl --conf=conf.yaml stop
 
 =head1 DESCRIPTION
 
-    master n : slave 1 replication manager for mysql
+    master n : slave 1 replication commander for mysql
 
 =head1 OPTIONS
 

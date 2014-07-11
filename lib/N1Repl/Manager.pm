@@ -1,4 +1,4 @@
-package SwitchMaster::Controller;
+package N1Repl::Manager;
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use utf8;
 use Carp;
 use Scalar::Util qw/blessed/;
 use Data::Dumper;
-use SwitchMaster::Config;
+use N1Repl::Config;
 
 our $VERSION   = '0.02';
 
@@ -14,18 +14,18 @@ sub new {
   my ($class, %args) = @_;
   my $driver = delete($args{driver}) || 'DBI';
 
-  eval("require SwitchMaster::Driver::$driver");
+  eval("require N1Repl::Driver::$driver");
   if ($@) {
     Carp::croak("invalid driver '$driver'");
   }
 
   my $config = $args{config};
-  if (!$config || !blessed($config) || !$config->isa('SwitchMaster::Config')) {
+  if (!$config || !blessed($config) || !$config->isa('N1Repl::Config')) {
     Carp::croak("invalid config");
   }
 
   bless {
-    driver_name => "SwitchMaster::Driver::$driver",
+    driver_name => "N1Repl::Driver::$driver",
     config => $config,
   } => $class;
 }

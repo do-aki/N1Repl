@@ -1,4 +1,4 @@
-package SwitchMaster::MasterConfig;
+package N1Repl::MasterConfig;
 
 use strict;
 use warnings;

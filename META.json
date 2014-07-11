@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "master n : slave 1 replication for mysql",
    "author" : [
       "do-aki <do.hiroaki@gmail.com>"
    ],
@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "SwitchMaster",
+   "name" : "N1Repl",
    "no_index" : {
       "directory" : [
          "t",
@@ -42,15 +42,32 @@
       },
       "runtime" : {
          "requires" : {
-            "perl" : "5.008005"
+            "DBD::mysql" : "4.013",
+            "DBI" : "1.609",
+            "YAML::Tiny" : "1.48",
+            "perl" : "5.008001"
          }
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.98"
+            "Test::More" : "0.98",
+            "Test::SharedFork" : "0.21",
+            "Test::TCP" : "2.01",
+            "Test::mysqld" : "0.17"
          }
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/do-aki/N1Repl/issues"
+      },
+      "homepage" : "https://github.com/do-aki/N1Repl",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/do-aki/N1Repl.git",
+         "web" : "https://github.com/do-aki/N1Repl"
+      }
+   },
    "version" : "0.01"
 }

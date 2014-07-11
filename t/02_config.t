@@ -3,9 +3,9 @@ use warnings;
 use Test::More;
 use t::setUp;
 
-use SwitchMaster::Config;
+use N1Repl::Config;
 
-my $c = new SwitchMaster::Config();
+my $c = new N1Repl::Config();
 $c->load('t/02_config/conf.yaml');
 
 my %conf = $c->connect_config;

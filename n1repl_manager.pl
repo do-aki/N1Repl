@@ -9,8 +9,8 @@ use lib "$FindBin::Bin/lib";
 use Getopt::Long;
 use Pod::Usage;
 use Data::Dumper;
-use SwitchMaster::Config;
-use SwitchMaster::Controller;
+use N1Repl::Config;
+use N1Repl::Manager;
 
 ++$|; # auto flush
 
@@ -18,7 +18,7 @@ my $daemonize = 0;
 my $config_file;
 Getopt::Long::Configure ("no_ignore_case");
 GetOptions(
-  'config=s' => \$config_file,
+  'conf=s' => \$config_file,
   'daemon' => \$daemonize,
   'h|help' => \my $help,
 );
@@ -28,8 +28,8 @@ if ($help || !$config_file) {
   pod2usage(-verbose=>2, -exitval=>0);
 }
 
-my $config = SwitchMaster::Config->new()->load($config_file);
-my $sm = new SwitchMaster::Controller(driver=>'DBI', config => $config);
+my $config = N1Repl::Config->new()->load($config_file);
+my $sm = new N1Repl::Manager(driver=>'DBI', conf => $config);
 $sm->connect();
 $sm->run();
 
@@ -37,7 +37,7 @@ __END__
 
 =head1 NAME
 
-    switch_master.pl
+    n1repl_manager.pl
 
 =head1 SYNOPSIS
 

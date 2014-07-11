@@ -7,7 +7,7 @@ use Test::SharedFork;
 use t::setUp;
 use YAML::Tiny;
 
-use SwitchMaster::Controller;
+use N1Repl::Manager;
 
 my $master1 = setup_mysqld();
 my $master2 = setup_mysqld();
@@ -25,21 +25,21 @@ my $mi2 = get_master_info($master2);
 
 my $data_file = [tempfile()]->[1];
 YAML::Tiny::DumpFile($data_file, [$mi1, $mi2]);
-my $master_config = new SwitchMaster::MasterConfig($data_file);
+my $master_config = new N1Repl::MasterConfig($data_file);
 
 my $cmd_file = [tempfile()]->[1];
-my $command_checker = new SwitchMaster::CommandChecker($cmd_file);
+my $command_checker = new N1Repl::CommandChecker($cmd_file);
 
 my $pid = fork();
 if ($pid == 0) {
   Test::SharedFork->child;
 
-  my $c = new SwitchMaster::Config();
+  my $c = new N1Repl::Config();
   $c->master_config($master_config);
   $c->command_checker($command_checker);
   $c->{SWITCH_WAIT} = 1;
 
-  my $sm = new SwitchMaster::Controller(driver=>'DBI', config=>$c);
+  my $sm = new N1Repl::Manager(driver=>'DBI', config=>$c);
   $sm->connect(MYSQL_HOST=>'127.0.0.1', MYSQL_PORT=>$slave->my_cnf->{port}, MYSQL_USER=>'root');
   $sm->run();
 } elsif (0 < $pid) {

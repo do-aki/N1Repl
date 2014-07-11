@@ -1,4 +1,4 @@
-package SwitchMaster::Config;
+package N1Repl::Config;
 
 use strict;
 use warnings;
@@ -6,9 +6,9 @@ use utf8;
 use Carp qw/croak/;
 use YAML::Tiny;
 use Scalar::Util qw/blessed/;
-use SwitchMaster::MasterConfig;
-use SwitchMaster::CommandChecker;
-use SwitchMaster::CommandPublisher;
+use N1Repl::MasterConfig;
+use N1Repl::CommandChecker;
+use N1Repl::CommandPublisher;
 
 # デフォルト値の設定
 my %wait_default = (
@@ -46,11 +46,11 @@ sub load {
     $conf = YAML::Tiny::LoadFile($file);
 
     Carp::croak("data_file is not specified in $file") if (!$conf->{data_file});
-    $self->{_master_config} = new SwitchMaster::MasterConfig($conf->{data_file});
+    $self->{_master_config} = new N1Repl::MasterConfig($conf->{data_file});
 
     Carp::croak("command_file is not specified in $file") if (!$conf->{command_file});
-    $self->{_command_checker} = new SwitchMaster::CommandChecker($conf->{command_file});
-    $self->{_command_publisher} = new SwitchMaster::CommandPublisher($conf->{command_file});
+    $self->{_command_checker} = new N1Repl::CommandChecker($conf->{command_file});
+    $self->{_command_publisher} = new N1Repl::CommandPublisher($conf->{command_file});
   };
   if ($@) {
     croak $@;
@@ -88,7 +88,7 @@ sub master_config {
   my ($self, $master_config) = @_;
 
   if ($master_config) {
-    if (!blessed($master_config) || !$master_config->isa('SwitchMaster::MasterConfig')) {
+    if (!blessed($master_config) || !$master_config->isa('N1Repl::MasterConfig')) {
       Carp::croak("invalid master config");
     }
 
@@ -103,7 +103,7 @@ sub command_checker {
   my ($self, $checker) = @_;
 
   if ($checker) {
-    if (!blessed($checker) || !$checker->isa('SwitchMaster::CommandChecker')) {
+    if (!blessed($checker) || !$checker->isa('N1Repl::CommandChecker')) {
       Carp::croak("invalid command checker");
     }
 
@@ -118,7 +118,7 @@ sub command_publisher {
   my ($self, $publisher) = @_;
 
   if ($publisher) {
-    if (!blessed($publisher) || !$publisher->isa('SwitchMaster::CommandPublisher')) {
+    if (!blessed($publisher) || !$publisher->isa('N1Repl::CommandPublisher')) {
       Carp::croak("invalid command publisher");
     }
 

@@ -1,0 +1,8 @@
+data_file: data/masters.yaml
+command_file: data/command
+mysql:
+  MYSQL_HOST: 127.0.0.1
+  MYSQL_PORT: 3306
+  MYSQL_USER: myuser
+  MYSQL_PASSWORD: pass
+

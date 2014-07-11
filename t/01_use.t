@@ -3,7 +3,7 @@ use File::Basename;
 use Test::More;
 
 BEGIN {
-  use_ok 'SwitchMaster';
+  use_ok 'N1Repl';
 }
 
 done_testing;

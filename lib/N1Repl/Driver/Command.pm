@@ -1,4 +1,4 @@
-package SwitchMaster::Driver::Command;
+package N1Repl::Driver::Command;
 use strict;
 use warnings;
 use utf8;

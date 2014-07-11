@@ -1,10 +1,10 @@
 #
-# START   start switchmaster
-# STOP    stop  switchmaster
+# START   start master roration
+# STOP    stop  master rotation
+# SWITCH  switch master 
 #
 #
-#
-package SwitchMaster::Command;
+package N1Repl::Command;
 
 
 use strict;
@@ -50,18 +50,18 @@ sub parse {
   return nop() unless ($cmd);
 
   if ($cmd eq 'START') {
-    return new SwitchMaster::Command($cmd);
+    return new N1Repl::Command($cmd);
   } elsif ($cmd eq 'STOP') {
-    return new SwitchMaster::Command($cmd);
+    return new N1Repl::Command($cmd);
   } elsif ($cmd eq 'SWITCH') {
-    return new SwitchMaster::Command($cmd, %params);
+    return new N1Repl::Command($cmd, %params);
   }
 
   return nop();
 }
 
 sub nop {
-  return new SwitchMaster::Command('NOP')
+  return new N1Repl::Command('NOP')
 }
 
 1;

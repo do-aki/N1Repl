@@ -8,16 +8,26 @@ SwitchMaster - master n : slave 1 replication for mysql
 # SYNOPSIS
 
    % carton install
-   % carton exec perl switch_master.pl
+   % carton exec perl n1repl_manager.pl --conf=config.yaml
+
+# INSTALLATION
+```
+carton install
+```
+
+RedHat 系なら yum で入る
+```
+yum install perl-DBD-MySQL perl-YAML-Tiny
+```
 
 # HOW TO USE
 
-1. あらかじめ、複数のマスタからデータをバックアップし、MASTER_LOG_FILE / MASTER_LOG_POS を記録しておく。
+1. あらかじめ、複数のマスタからデータをバックアップし、その時点の MASTER_LOG_FILE / MASTER_LOG_POS を記録しておく。
 2. スレーブサーバに、全データを投入。どれか一つのマスタに対して、レプリケーションを張っておく
-3. data/settings.yaml.dist を data/settings.yaml に書き換えて、スレーブサーバへの接続設定をする。
+3. data/config.yaml を参考に、スレーブサーバへの接続設定をする
 4. data/masters.yaml.dist を data/masters.yaml に書き換えて、レプリケーション設定 (CHANGE MASTER TO の内容)をする。
    このとき、既に動いているレプリケーションの MASTER_LOG_FILE / MASTER_LOG_POS は設定する必要がない
-5. switch_master.pl を実行する
+5. n1repl_manager.pl を実行する
 
 # REFERENCE
 * http://www.slideshare.net/do_aki/20110809-my-sql-casual-talks-vol2

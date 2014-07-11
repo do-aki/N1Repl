@@ -3,11 +3,11 @@ use warnings;
 use Test::More;
 use t::setUp;
 
-use SwitchMaster::Command;
+use N1Repl::Command;
 
 sub parse {
   my $line = shift;
-  SwitchMaster::Command::parse($line);
+  N1Repl::Command::parse($line);
 }
 
 my $cmd1 = parse("START\n");
