@@ -29,7 +29,7 @@ if ($help || !$config_file) {
 }
 
 my $config = N1Repl::Config->new()->load($config_file);
-my $sm = new N1Repl::Manager(driver=>'DBI', conf => $config);
+my $sm = new N1Repl::Manager(driver=>'DBI', config => $config);
 $sm->connect();
 $sm->run();
 

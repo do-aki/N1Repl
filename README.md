@@ -26,8 +26,8 @@ yum install perl-DBD-MySQL perl-YAML-Tiny
 2. スレーブサーバに、全データを投入。どれか一つのマスタに対して、レプリケーションを張っておく
 3. data/config.yaml を参考に、スレーブサーバへの接続設定をする
 4. data/masters.yaml.dist を data/masters.yaml に書き換えて、レプリケーション設定 (CHANGE MASTER TO の内容)をする。
-   このとき、既に動いているレプリケーションの MASTER_LOG_FILE / MASTER_LOG_POS は設定する必要がない
-5. n1repl_manager.pl を実行する
+   このとき、既に動いているレプリケーションの MASTER_LOG_FILE / MASTER_LOG_POS は適当に設定しておいてください
+5. `n1repl_manager.pl --conf=data/config.yaml`  を実行する
 
 # REFERENCE
 * http://www.slideshare.net/do_aki/20110809-my-sql-casual-talks-vol2
