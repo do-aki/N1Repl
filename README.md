@@ -8,6 +8,7 @@ SwitchMaster - master n : slave 1 replication for mysql
 # SYNOPSIS
 
    % carton install
+
    % carton exec perl n1repl_manager.pl --conf=config.yaml
 
 # INSTALLATION
