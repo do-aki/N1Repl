@@ -47,7 +47,7 @@ sub cmd_switch {
     Carp::croak("missing mandatory parameter $k") unless $params{$k};
   }
 
-  join("\t", map {"$_=$params{$_}"} @keys);
+  "SWITCH\t" . join("\t", map {"$_=$params{$_}"} @keys);
 }
 
 sub publish {
