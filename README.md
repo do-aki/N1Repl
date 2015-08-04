@@ -71,8 +71,9 @@ $ disown
 
 n1repl_manager 実行中に、その挙動を制御できます
 
+実行例
 ```
-perl n1repl_manager.pl command [options]
+perl n1repl_command.pl stop --conf=data/config.yaml
 ```
 ## コマンド一覧
 ### stop
